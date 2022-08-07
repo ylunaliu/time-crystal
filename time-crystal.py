@@ -5,14 +5,16 @@ from qiskit.quantum_info import Statevector
 import numpy as np
 import matplotlib.pyplot as plt
 import random
-num = 5
-num_round = 5
+num = 5 #number of qubits
+num_round = 3 #number of periods
 # Create a quantum circuit acting on a quantum register of 20 qubits
 circ=QuantumCircuit(num)
 sim = Aer.get_backend('aer_simulator') 
 # some initial_state can be 1
 initial_state = [0,1]
 g = 0.97
+
+#only draw once for eveything
 
 # Get a random number for qubit that start as 1
 number_of_qubit_1 = np.random.randint(0,num,size=1)
@@ -51,12 +53,13 @@ circ.save_statevector()
 qobj = assemble(circ)     # Create a Qobj from the circuit for the simulator to run
 result = sim.run(qobj).result() 
 out_state = result.get_statevector()
-print(f"here {circ.measure_all()}")
+circ.measure_all()
 circ.draw()
 print(out_state)
 qobj = assemble(circ)
 result = sim.run(qobj).result()
 counts = result.get_counts()
+print(f"counts: {counts}")
 plot_histogram(counts)
 circ.draw('mpl')
 plt.show()
